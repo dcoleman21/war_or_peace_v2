@@ -31,17 +31,16 @@ class TurnTest < Minitest::Test
   end
 
   def test_it_exists_with_deck_attributes  
+    # all of these `deck1.cards` methods reference the deck class, 
+    # which you've already tested well. So, no need to test so rigerously. 
+    # I'm deleting them, and moving the tests so they don't reference
+    # spoils of war
+    
     assert_instance_of Deck, @deck1
     assert_equal 4, @turn.deck1.cards, @card1
-    assert_includes @turn.deck1.cards, @card2
-    assert_includes @turn.deck1.cards, @card5
-    assert_includes @turn.deck1.cards, @card8
-    assert_instance_of Deck, @deck2
-    assert_equal 4, @turn.deck2.cards.count
-    assert_includes @turn.deck2.cards, @card3
-    assert_includes @turn.deck2.cards, @card4
-    assert_includes @turn.deck2.cards, @card6
-    assert_includes @turn.deck2.cards, @card7
+  end
+  
+  def test_spoils_of_war_starts_as_empty_array
     assert_equal [], @turn.spoils_of_war
   end
 
