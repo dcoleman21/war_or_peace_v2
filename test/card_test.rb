@@ -8,13 +8,16 @@ class CardTest < Minitest::Test
   end
 
   def test_it_exists
-    card = Card.new(:diamond, 'Queen', 12)
+    # combine this test and `test_it_has_readable_attributes
+    # or just get rid of this `test_it_exists` test. 
+    card = Card.new(:diamond, 'Queen', 12) # if you have a setup method, 
+    # use it! 
 
     assert_instance_of Card, card
   end
 
   def test_it_has_readable_attributes
-    card = Card.new(:diamond, 'Queen', 12)
+    card = Card.new(:diamond, 'Queen', 12) # use the setup method
 
     assert_equal :diamond, card.suit
     assert_equal 'Queen', card.value
