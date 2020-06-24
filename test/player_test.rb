@@ -17,22 +17,21 @@ class PlayerTest < Minitest::Test
   def test_it_has_readable_attributes
     assert_instance_of Player, @player
     assert_equal 'Clarisa', @player.name
-    assert_equal @deck, @player.deck
+    assert_instance_of Deck, @player.deck
   end
 
   def test_it_has_lost
-    assert_equal false, @player.has_lost?
+    refute @player.has_lost?
   end
 
-  def test_has_lost_can_return_true
-    assert_equal @deck, @player.deck
+  def test_has_lost_returns_true_when_no_cards_remain
     @player.deck.remove_card(@card1)
-    assert_equal false, @player.has_lost?
+    refute @player.has_lost?
     @player.deck.remove_card(@card2)
-    assert_equal false, @player.has_lost?
+    refute @player.has_lost?
     @player.deck.remove_card(@card3)
-    assert_equal true, @player.has_lost?
-    assert_equal @deck, @player.deck
+
+    assert @player.has_lost?
   end
 end
 
