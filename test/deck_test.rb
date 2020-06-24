@@ -28,7 +28,9 @@ class DeckTest < Minitest::Test
   end
 
   def test_it_can_get_high_ranking_cards_from_original_deck #when I use assert_includes it gives me a failure
-    assert_equal [@card1, @card3], @deck.high_ranking_cards
+    # assert_equal [@card1, @card3], @deck.high_ranking_cards
+    assert_includes @deck.high_ranking_cards, @card1
+    assert_includes @deck.high_ranking_cards, @card3
   end
 
   def test_it_can_get_percent_high_ranking_from_original_deck
@@ -43,12 +45,20 @@ class DeckTest < Minitest::Test
   end
 
   def test_it_can_get_high_ranking_cards_after_card_removed
+    # lets add an assertion _before_ removing the card, too, like:
+    assert_includes @deck.high_ranking_cards, @card1
+    
     @deck.remove_card(@card1)
-    assert_equal [@card3], @deck.high_ranking_cards
+    
+    refute_includes @deck.high_ranking_cards, @card1
   end
 
   def test_it_can_get_percent_high_ranking_after_card_removed
+    # add the "setup" assertion:
+    assert_equal 66.67, @deck.percent_high_ranking
+    
     @deck.remove_card(@card1)
+    
     assert_equal 50.0, @deck.percent_high_ranking
   end
 
@@ -62,10 +72,20 @@ class DeckTest < Minitest::Test
   def test_it_can_get_high_ranking_with_new_card_added
     @deck.remove_card(@card1)
     @deck.add_card(@card4)
-    assert_equal [@card3], @deck.high_ranking_cards
+    assert_equal [@card3], @deck.high_ranking_cards # convert to assert_includes
   end
 
   def test_it_can_get_percent_high_ranking_with_new_card_added
+    # this test is a bit confusing to me. I'll propose a test naming convention:
+    # test_add_card_affects_percent_high_ranking
+    
+    # converted to "english", here's how I would read this test name:
+    
+    # "test that the #add_card method affects #percent_high_ranking"
+    
+    # in other words, I'd recommend a format of `test_method_under_test_result`
+  
+    
     @deck.remove_card(@card1)
     @deck.add_card(@card4)
     assert_equal [@card2, @card3, @card4], @deck.cards
