@@ -34,7 +34,7 @@ class DeckTest < Minitest::Test
 
   def test_high_ranking_cards_does_not_return_removed_card
     assert_includes @deck.high_ranking_cards, @card1
-    @deck.remove_card(@card1)
+    @deck.remove_card
 
     refute_includes @deck.high_ranking_cards, @card1
   end
@@ -45,14 +45,13 @@ class DeckTest < Minitest::Test
 
   def test_percent_high_ranking_returns_new_percent
     assert_equal 66.67, @deck.percent_high_ranking
-    @deck.remove_card(@card1)
-
+    @deck.remove_card
     assert_equal 50.0, @deck.percent_high_ranking
   end
 
   def test_remove_card_removes_card
     assert_equal 3, @deck.cards.count
-    @deck.remove_card(@card1)
+    @deck.remove_card
 
     assert_equal 2, @deck.cards.count
     refute_includes @deck.cards, @card1
