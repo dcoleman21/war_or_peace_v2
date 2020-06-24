@@ -47,6 +47,16 @@ class TurnTest < Minitest::Test
   def test_basic_turn_type
     assert_equal :basic, @turn.type
   end
+  
+  def test_war_turn_type
+    # figure out your "war type" setup
+    assert_equal :war, @turn.type
+  end
+  
+  def test_mad_turn_type
+    # figure out your "mad type" setup
+    assert_equal :mad, @turn.type
+  end
 
   def test_basic_winner
     assert_equal @player1, @turn.winner
