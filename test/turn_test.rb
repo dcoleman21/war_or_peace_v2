@@ -28,6 +28,9 @@ class TurnTest < Minitest::Test
     assert_instance_of Turn, @turn
     assert_equal @player1, @turn.player1
     assert_equal @player2, @turn.player2
+  end
+
+  def test_it_exists_with_deck_attributes  
     assert_instance_of Deck, @deck1
     assert_equal 4, @turn.deck1.cards, @card1
     assert_includes @turn.deck1.cards, @card2
