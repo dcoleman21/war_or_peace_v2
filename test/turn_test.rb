@@ -63,11 +63,14 @@ class TurnTest < Minitest::Test
   end
 
   def test_award_spoils_to_winner_of_basic_turn
+    #each player has put a card in the pile, leaving 3 cards in hand.
+    #player 1 won the turn so they get the 2 cards; which would be 5 total
+    #player 2 lost the turn so they still have 3 cards total
     @turn.pile_cards
     @turn.award_spoils(@player1)
     assert_empty  @turn.spoils_of_war
-    assert_equal 4, @player1.deck.cards.count
-    assert_equal 3, @player2.deck.cards.count#expected 2 actual 3
+    assert_equal 5, @player1.deck.cards.count#actual is saying 4
+    assert_equal 3, @player2.deck.cards.count
   end
 
   def test_war_turn_type_if_top_cards_are_same_rank
@@ -121,11 +124,12 @@ class TurnTest < Minitest::Test
     player1 = Player.new("Megan", deck1)
     player2 = Player.new("Aurora", deck2)
     turn = Turn.new(player1, player2)
-
+    #each player puts 3 cards in pile; leaving each with one card
+    #and the pile with 6 cards
     turn.pile_cards
     assert_equal 6, turn.spoils_of_war.count
-    assert_equal 0, turn.player1.deck.cards.count
-    assert_equal 0, turn.player2.deck.cards.count
+    assert_equal 1, turn.player1.deck.cards.count
+    assert_equal 1, turn.player2.deck.cards.count
   end
 
   def test_award_spoils_war_turn_type
@@ -142,12 +146,13 @@ class TurnTest < Minitest::Test
     player1 = Player.new("Megan", deck1)
     player2 = Player.new("Aurora", deck2)
     turn = Turn.new(player1, player2)
-
+    #player 2 won the turn, so they should now have 7 total
+    #player 1 lost the turn, so they should have 1 card left
     turn.pile_cards
     turn.award_spoils(player2)
     assert_empty turn.spoils_of_war
-    assert_equal 0, turn.player1.deck.cards.count
-    assert_equal 6, turn.player2.deck.cards.count#failure says should be 2 cards
+    assert_equal 1, turn.player1.deck.cards.count
+    assert_equal 7, turn.player2.deck.cards.count#saying actual 2
   end
 
   def test_mad_turn_type_if_top_and_third_card_have_same_rank
@@ -201,11 +206,12 @@ class TurnTest < Minitest::Test
     player1 = Player.new("Megan", deck1)
     player2 = Player.new("Aurora", deck2)
     turn = Turn.new(player1, player2)
-
+    #each player removes top 3 cards; not put into spoils pile
+    #so each player should have 1 card each
     turn.pile_cards
     assert_equal 0, turn.spoils_of_war.count
-    assert_equal 0, turn.player1.deck.cards.count
-    assert_equal 0, turn.player2.deck.cards.count
+    assert_equal 1, turn.player1.deck.cards.count
+    assert_equal 1, turn.player2.deck.cards.count
   end
 
   def test_award_spoils_returns_nothing_if_mad_turn_type
@@ -222,12 +228,12 @@ class TurnTest < Minitest::Test
     player1 = Player.new("Megan", deck1)
     player2 = Player.new("Aurora", deck2)
     turn = Turn.new(player1, player2)
-
+    #there is no spoils pile
     turn.pile_cards
     turn.award_spoils("No Winner")
     assert_empty turn.spoils_of_war
-    assert_equal 0, turn.player1.deck.cards.count
-    assert_equal 0, turn.player2.deck.cards.count
+    assert_equal 1, turn.player1.deck.cards.count
+    assert_equal 1, turn.player2.deck.cards.count
   end
 
 end
