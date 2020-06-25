@@ -12,13 +12,9 @@ class Turn
   end
 
   def determine_turn_type
-    if top_card_different_rank?
-      :basic
-    elsif third_card_same_rank?
-      :mad
-    elsif top_card_same_rank?
-      :war
-    end
+    return :mad if top_card_same_rank? && third_card_same_rank?
+    return :war if top_card_same_rank?
+    return :basic if !top_card_same_rank?
   end
 
   def top_card_different_rank?
@@ -65,12 +61,12 @@ class Turn
   end
 
   def award_spoils(winner)
-    if winner == player1 || winner == player2
-      @spoils_of_war << winner.deck.cards
-      winner.deck.cards == winner.deck.cards.flatten
-    else
-      p "No spoils to award"
-    end
+    winner.deck.add_card(@spoils_of_war) if winner.is_a?(Player)
+   @spoils_of_war = []
   end
+
+  # def start
+  #
+  # end
 
 end
