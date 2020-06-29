@@ -30,13 +30,14 @@ class Turn
   end
 
   def winner
-    if player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0)
-      player1
+    if player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0)
+      "No Winner"
     elsif player1.deck.rank_of_card_at(2) < player2.deck.rank_of_card_at(2)
       player2
-    elsif player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0)
-      "No Winner"
+    elsif player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0)
+      player1
     end
+
   end
 
   def pile_cards
@@ -61,8 +62,9 @@ class Turn
   end
 
   def award_spoils(winner)
+    # require "pry"; binding.pry
     winner.deck.add_card(@spoils_of_war) if winner.is_a?(Player)
-   @spoils_of_war = []
+    @spoils_of_war = []
   end
 
   # def start
