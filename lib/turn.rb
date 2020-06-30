@@ -14,30 +14,31 @@ class Turn
   def determine_turn_type
     return :mad if top_card_same_rank? && third_card_same_rank?
     return :war if top_card_same_rank?
-    return :basic if !top_card_same_rank?
-  end
-
-  def top_card_different_rank?
-    player1.deck.rank_of_card_at(0) != player2.deck.rank_of_card_at(0)
-  end
-
-  def third_card_same_rank?
-    player1.deck.rank_of_card_at(2) == player2.deck.rank_of_card_at(2)
+    return :basic if top_card_different_rank?
   end
 
   def top_card_same_rank?
     player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0)
   end
 
+  def third_card_same_rank?
+    player1.deck.rank_of_card_at(2) == player2.deck.rank_of_card_at(2)
+  end
+
+  def top_card_different_rank?
+    player1.deck.rank_of_card_at(0) != player2.deck.rank_of_card_at(0)
+  end
+
   def winner
-    if player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0)
+    if player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0) && player1.deck.rank_of_card_at(2) == player2.deck.rank_of_card_at(2)
       "No Winner"
-    elsif player1.deck.rank_of_card_at(2) < player2.deck.rank_of_card_at(2)
-      player2
     elsif player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0)
       player1
+    elsif player1.deck.rank_of_card_at(2) < player2.deck.rank_of_card_at(2)
+      player2
+    # elsif player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0)
+    #   "No Winner"
     end
-
   end
 
   def pile_cards
