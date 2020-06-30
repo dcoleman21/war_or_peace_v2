@@ -46,12 +46,14 @@ class TurnTest < Minitest::Test
     assert_equal :basic, @turn.type
   end
 
-  def test_winner_basic_turn_type
+  def test_who_is_the_winner_of_the_basic_turn_type
     assert_equal :basic, @turn.type
+    #@turn_type = :basic, @deck1 = @card1, @deck2 = @card3, @player1 = winner
+    return @deck1.cards[0] && @deck2.cards[0]
     assert_equal @player1, @turn.winner
   end
 
-  def test_pile_cards_into_spoils_pile_basic
+  def test_pile_cards_into_the_spoils_pile_for_basic_turn_type
     player1_starting_card = @player1.deck.cards.first
     player2_starting_card = @player2.deck.cards.first
     @turn.pile_cards
@@ -67,6 +69,7 @@ class TurnTest < Minitest::Test
     #player 1 won the turn so they get the 2 cards; which would be 5 total
     #player 2 lost the turn so they still have 3 cards total
     @turn.pile_cards
+    assert_equal 2, @turn.spoils_of_war.count
     @turn.award_spoils(@player1)
     assert_empty  @turn.spoils_of_war
     assert_equal 5, @player1.deck.cards.count#actual is saying 4
