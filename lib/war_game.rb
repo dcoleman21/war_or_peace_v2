@@ -80,15 +80,16 @@ class WarGame
     # turn_count = 0
     if input == 'GO'
       turn_count = 0
-      loop do
-        @turn = Turn.new(@player1, @player2)
+      while turn_count < 100_000_000
         turn_count += 1
-        winner
+      # loop do
+      #   @turn = Turn.new(@player1, @player2)
+      #   turn_count += 1
+        # winner
         @pile_cards
-          if player1.has_lost? == true || player2.has_lost? == true || turn_count == 100_000_00
-            break
-          else
-            award_spoils(winner)
+          if @player1.has_lost? == true || @player2.has_lost? == true || turn_count == 100_000_00
+          # else
+          #   award_spoils(winner)
             if @spoils_of_war.count == 2
               p "Turn #{count}: #{winner.name} won 2 cards"
             elsif @spoils_of_war.count == 6
@@ -100,6 +101,6 @@ class WarGame
         end
       end
     end
-
+  end
 
 end
