@@ -66,9 +66,4 @@ class Turn
     winner.deck.add_card(@spoils_of_war) if winner.is_a?(Player)
     @spoils_of_war = []
   end
-
-  # def start
-  #
-  # end
-
 end
