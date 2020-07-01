@@ -94,7 +94,7 @@ class TurnTest < Minitest::Test
     assert_equal :war, turn.type
   end
 
-  def test_winner_war_turn_type
+  def test_who_is_the_winner_of_the_war_turn_type
     card1 = Card.new(:heart, 'Jack', 11)
     card2 = Card.new(:heart, '10', 10)
     card3 = Card.new(:heart, '9', 9)
@@ -110,6 +110,7 @@ class TurnTest < Minitest::Test
     turn = Turn.new(player1, player2)
 
     assert_equal :war, turn.type
+    return deck1.cards[0] && deck2.cards[0]
     assert_equal player2, turn.winner
   end
 
@@ -176,7 +177,7 @@ class TurnTest < Minitest::Test
     assert_equal :mad, turn.type
   end
 
-  def test_winner_mad_turn_type
+  def test_who_is_the_winner_of_the_mad_turn_type
     card1 = Card.new(:heart, 'Jack', 11)
     card2 = Card.new(:heart, '10', 10)
     card3 = Card.new(:heart, '9', 9)
@@ -192,6 +193,7 @@ class TurnTest < Minitest::Test
     turn = Turn.new(player1, player2)
 
     assert_equal :mad, turn.type
+    return deck1.cards[0..2] && deck2.cards[0..2]
     assert_equal "No Winner", turn.winner
   end
 
