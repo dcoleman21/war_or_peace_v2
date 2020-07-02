@@ -62,9 +62,13 @@ class Turn
     end
   end
 
-  def award_spoils(winner)
-    winner.deck.add_card(@spoils_of_war) if winner.is_a?(Player)
-    require "pry"; binding.pry
-    @spoils_of_war = []
+  def award_spoils(winner)#this goes through one player and then the next
+    until @spoils_of_war.empty? do
+      winner.deck.add_card(@spoils_of_war.shift)
+      require "pry"; binding.pry
+    end
+    # winner.deck.add_card(@spoils_of_war) if winner.is_a?(Player)
+    # require "pry"; binding.pry
+    # @spoils_of_war = []
   end
 end
