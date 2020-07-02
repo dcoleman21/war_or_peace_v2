@@ -25,11 +25,11 @@ class PlayerTest < Minitest::Test
   end
 
   def test_has_lost_returns_true_when_no_cards_remain
-    @player.deck.remove_card(@card1)
+    @player.deck.remove_card
     refute @player.has_lost?
-    @player.deck.remove_card(@card2)
+    @player.deck.remove_card
     refute @player.has_lost?
-    @player.deck.remove_card(@card3)
+    @player.deck.remove_card
 
     assert @player.has_lost?
   end

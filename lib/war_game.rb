@@ -4,8 +4,28 @@ require './lib/player'
 require './lib/turn'
 
 class WarGame
+  # attr_reader :cards
+  # SUITS = ["Hearts", "Clubs", "Spades", "Diamonds"]
+  #
+  #
+  # def initialize
+  #   generate_deck
+  # end
+  #
+  # def generate_deck
+  #   @cards = []
+  #   SUITS.each do |suit|
+  #     [1..13].each do |rank|
+  #       @cards << Card.new(suit, rank)
+  #     end
+  #   end
+  # end
 
   def start
+  #   turn.start
+  # end
+
+
     @cards = []
     @cards << Card.new(:heart, 'Jack', 11)
     @cards << Card.new(:heart, '10', 10)
@@ -77,21 +97,35 @@ class WarGame
     "------------------------------------------------------------------"
 
     input = gets.chomp.upcase
+
     if input == "GO"
       p "Let's Play!"
       turn_count = 0
       loop do
         turn = Turn.new(@player1, @player2)
         turn_count += 1
-        winner = turn.winner
-        turn.pile_cards
-          if @player1.has_lost? == true || @player2.has_lost? == true || turn_count == 1_000_000
-            break
 
-          else
-            turn.award_spoils(winner)
+        turn.spoils_of_war
+        turn.type
+        turn.winner
+        turn.pile_cards
+        turn.spoils_of_war
+        turn.award_spoils(winner)
+        # require "pry"; binding.pry
+        #array of two cards, type is :basic
+        # results = turn.pile_cards
+        # turn1.spoils_of_war
+          #if @player1.has_lost? == true || @player2.has_lost? == true || turn_count == 1_000_000
+          #break
+          # else
             if turn.type == :basic
+              turn.spoils_of_war
+              # turn.type
+              turn.winner
               turn.pile_cards
+              turn.spoils_of_war
+              turn.award_spoils(winner)
+              # turn.pile_cards
               p "Turn #{turn_count}: #{winner.name} won 2 cards"
             elsif turn.type == :war
               turn.pile_cards
@@ -101,7 +135,7 @@ class WarGame
             end
 
           turn.spoils_of_war.clear
-          end
+          # end
       end
       if @player1.deck.cards.count == 0
         p "*** #{@player2.name} has won the game! ***"
