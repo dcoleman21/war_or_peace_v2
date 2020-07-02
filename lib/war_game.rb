@@ -59,15 +59,15 @@ class WarGame
     @cards << Card.new(:club, '3', 3)
     @cards << Card.new(:spade, '2', 2)
     @cards << Card.new(:diamond, 'King', 13)
-    @cards.shuffle
+    @shuffled = @cards.shuffle
 
-    @deck1 = Deck.new(@cards.pop(26))
-    @deck2 = Deck.new(@cards)
+    @deck1 = Deck.new(@shuffled.pop(26))
+    @deck2 = Deck.new(@shuffled)
 
     @player1 = Player.new("Megan", @deck1)
     @player2 = Player.new("Aurora",@deck2)
 
-    @turn = Turn.new(@player1, @player2)
+    # @turn = Turn.new(@player1, @player2)
 
 
 
@@ -77,28 +77,38 @@ class WarGame
     "------------------------------------------------------------------"
 
     input = gets.chomp.upcase
-    # turn_count = 0
-    if input == 'GO'
+    if input == "GO"
+      p "Let's Play!"
       turn_count = 0
-      while turn_count < 100_000_000
+      loop do
+        turn = Turn.new(@player1, @player2)
         turn_count += 1
-      # loop do
-      #   @turn = Turn.new(@player1, @player2)
-      #   turn_count += 1
-        # winner
-        @pile_cards
-          if @player1.has_lost? == true || @player2.has_lost? == true || turn_count == 100_000_00
-          # else
-          #   award_spoils(winner)
-            if @spoils_of_war.count == 2
-              p "Turn #{count}: #{winner.name} won 2 cards"
-            elsif @spoils_of_war.count == 6
+        winner = turn.winner
+        turn.pile_cards
+          if @player1.has_lost? == true || @player2.has_lost? == true || turn_count == 1_000_000
+            break
+
+          else
+            turn.award_spoils(winner)
+            if turn.type == :basic
+              turn.pile_cards
+              p "Turn #{turn_count}: #{winner.name} won 2 cards"
+            elsif turn.type == :war
+              turn.pile_cards
               p "Turn #{turn_count}: WAR - #{winner.name} won 6 cards"
             else
               p "Turn #{turn_count}: *mutually assured destruction* 6 cards removed from play"
             end
+
+          turn.spoils_of_war.clear
           end
-        end
+      end
+      if @player1.deck.cards.count == 0
+        p "*** #{@player2.name} has won the game! ***"
+      elsif @player2.deck.cards.count == 0
+        p "*** #{@player1.name} has won the game! ***"
+      else
+        p "--- DRAW ---"
       end
     end
   end
