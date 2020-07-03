@@ -8,13 +8,17 @@ class Turn
     @player1 = player1
     @player2 = player2
     @spoils_of_war = []
-    @type = determine_turn_type
+    @type = type
   end
 
-  def determine_turn_type
-    return :mad if top_card_same_rank? && third_card_same_rank?
-    return :war if top_card_same_rank?
-    return :basic if top_card_different_rank?
+  def type
+    if (player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0) && player1.deck.rank_of_card_at(2) == player2.deck.rank_of_card_at(2))
+      :mad
+    elsif (player1.deck.rank_of_card_at(0) != player2.deck.rank_of_card_at(0))
+      :basic
+    else
+      :war
+    end
   end
 
   def top_card_same_rank?
@@ -30,14 +34,20 @@ class Turn
   end
 
   def winner
-    if player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0) && player1.deck.rank_of_card_at(2) == player2.deck.rank_of_card_at(2)
+    if type == :basic
+      if player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0)
+        player1
+      else
+        player2
+      end
+    elsif type == :war
+      if player1.deck.rank_of_card_at(2) > player2.deck.rank_of_card_at(2)
+        player1
+      else
+        player2
+      end
+    else type == :mad
       "No Winner"
-    elsif player1.deck.rank_of_card_at(0) > player2.deck.rank_of_card_at(0)
-      player1
-    elsif player1.deck.rank_of_card_at(2) < player2.deck.rank_of_card_at(2)
-      player2
-    # elsif player1.deck.rank_of_card_at(0) == player2.deck.rank_of_card_at(0)
-    #   "No Winner"
     end
   end
 
@@ -46,29 +56,23 @@ class Turn
       @spoils_of_war << player1.deck.remove_card
       @spoils_of_war << player2.deck.remove_card
     elsif type == :war
-      @spoils_of_war << player1.deck.remove_card
-      @spoils_of_war << player1.deck.remove_card
-      @spoils_of_war << player1.deck.remove_card
-      @spoils_of_war << player2.deck.remove_card
-      @spoils_of_war << player2.deck.remove_card
-      @spoils_of_war << player2.deck.remove_card
+      3.times do
+        @spoils_of_war << player1.deck.remove_card
+        @spoils_of_war << player2.deck.remove_card
+      end
     elsif type == :mad
-      player1.deck.remove_card
-      player1.deck.remove_card
-      player1.deck.remove_card
-      player2.deck.remove_card
-      player2.deck.remove_card
-      player2.deck.remove_card
+      3.times do
+        player1.deck.remove_card
+        player2.deck.remove_card
+      end
     end
   end
 
-  def award_spoils(winner)#this goes through one player and then the next
-    until @spoils_of_war.empty? do
-      winner.deck.add_card(@spoils_of_war.shift)
-      require "pry"; binding.pry
+  def award_spoils(winner)
+    if winner.class == Player
+      until @spoils_of_war.empty? do
+        winner.deck.add_card(@spoils_of_war.shift)
+      end
     end
-    # winner.deck.add_card(@spoils_of_war) if winner.is_a?(Player)
-    # require "pry"; binding.pry
-    # @spoils_of_war = []
   end
 end
