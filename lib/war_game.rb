@@ -19,23 +19,14 @@ class WarGame
     until game_over? do
       turn = Turn.new(@player1, @player2)
       p "Turn Type: #{turn.type}"
-      # winner = turn.winner
 
-      case turn.type
-      when :basic
-        turn.pile_cards
-        turn.award_spoils(turn.winner)
-      when :war
-        turn.pile_cards
-        turn.award_spoils(turn.winner)
-      when :mad
-        turn.pile_cards
-      end
+      turn.pile_cards
+      turn.award_spoils(turn.winner)
 
       @turn_count += 1
       print_turn_summary(turn)
     end
-    print_game_summary
+    print_game_summary(turn)
   end
 
   def print_turn_summary(turn)
@@ -53,13 +44,15 @@ class WarGame
     @player1.has_lost? || @player2.has_lost? || turn_count == 1_000_000
   end
 
-  def print_game_summary
-    if @player1.deck.cards.count == 0
-      p "*** #{@player2.name} has won the game! ***"
-    elsif @player2.deck.cards.count == 0
-      p "*** #{@player1.name} has won the game! ***"
+  def neither_player_won?
+   !@player1.has_lost? && !@player2.has_lost?
+  end
+
+  def print_game_summary(turn)
+    if neither_player_won?
+      p "-----DRAW-----"
     else
-      p "--- DRAW ---"
+      p "*** #{turn.winner.name} has won the game! ***"
     end
   end
 
