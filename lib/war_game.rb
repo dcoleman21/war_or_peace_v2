@@ -1,6 +1,8 @@
 require './lib/turn'
 
 class WarGame
+  attr_reader :turn_count
+
   def initialize(player1, player2)
     @player1 = player1
     @player2 = player2
@@ -12,29 +14,46 @@ class WarGame
   end
 
   def play_game
-    turn_count = 1
-    until (@player1.has_lost? || @player2.has_lost? || turn_count == 1_000_000) do
+    @turn_count = 1
+
+    until game_over? do
       turn = Turn.new(@player1, @player2)
       p "Turn Type: #{turn.type}"
-      winner = turn.winner
-      if turn.type == :basic
+      # winner = turn.winner
+
+      case turn.type
+      when :basic
         turn.pile_cards
-        turn.award_spoils(winner)
-        p "Turn #{turn_count}: #{winner.name} won 2 cards"
-      elsif turn.type == :war
+        turn.award_spoils(turn.winner)
+      when :war
         turn.pile_cards
-        turn.award_spoils(winner)
-        puts "Turn #{turn_count}: WAR - #{winner.name} won 6 cards"
-      else
+        turn.award_spoils(turn.winner)
+      when :mad
         turn.pile_cards
-        p "Turn #{turn_count}: *mutually assured destruction* 6 cards removed from play"
       end
-      turn_count += 1
+
+      @turn_count += 1
+      print_turn_summary(turn)
     end
-    game_over
+    print_game_summary
   end
 
-  def game_over
+  def print_turn_summary(turn)
+    case turn.type
+    when :basic
+      p "Turn #{turn_count}: #{turn.winner.name} won 2 cards"
+    when :war
+      p "Turn #{turn_count}: WAR - #{turn.winner.name} won 6 cards"
+    when :mad
+      p "Turn #{turn_count}: *mutually assured destruction* 6 cards removed from play"
+    end
+  end
+
+  def game_over?
+    @player1.has_lost? || @player2.has_lost? || turn_count == 1_000_000
+  end
+
+  def print_game_summary
     if @player1.deck.cards.count == 0
       p "*** #{@player2.name} has won the game! ***"
     elsif @player2.deck.cards.count == 0
