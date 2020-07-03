@@ -6,22 +6,30 @@ class Deck
   end
 
   def rank_of_card_at(index)
-    cards[index].rank
+    if cards[index].nil?
+      0
+    else
+      cards[index].rank
+      # end
+    end
   end
 
   def high_ranking_cards
-    found_high = []
-    cards.each do |card|
-      if card.rank >= 11
-        found_high << card
-      end
+    cards.find_all do |card|
+      card > 10
     end
-    found_high
+    # found_high = []
+    # cards.each do |card|
+    #   if card.rank >= 11
+    #     found_high << card
+    #   end
+    # end
+    # found_high
   end
 
   def percent_high_ranking
-    total_card_count = @cards.count
-    high_cards_count = high_ranking_cards.count
+    # total_card_count = @cards.count
+    # high_cards_count = high_ranking_cards.count
     (high_cards_count.to_f / total_card_count * 100).round(2)
   end
 
