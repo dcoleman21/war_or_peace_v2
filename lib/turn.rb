@@ -46,7 +46,7 @@ class Turn
       else
         player2
       end
-    else type == :mad
+    else 
       "No Winner"
     end
   end
@@ -69,6 +69,7 @@ class Turn
   end
 
   def award_spoils(winner)
+    @spoils_of_war.shuffle!
     if winner.class == Player
       until @spoils_of_war.empty? do
         winner.deck.add_card(@spoils_of_war.shift)
