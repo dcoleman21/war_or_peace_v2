@@ -14,7 +14,7 @@ class WarGame
   end
 
   def play_game
-    @turn_count = 1
+    turn_count = 1
 
     until game_over? do
       turn = Turn.new(@player1, @player2)
@@ -23,7 +23,7 @@ class WarGame
       turn.pile_cards
       turn.award_spoils(turn.winner)
 
-      @turn_count += 1
+      turn_count += 1
       print_turn_summary(turn)
     end
     print_game_summary(turn)
